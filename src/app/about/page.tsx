@@ -1,13 +1,30 @@
+"use client";
+import { useEffect, useState } from "react";
+
 export default function AboutPage() {
-  const appName = process.env.NEXT_PUBLIC_APP_NAME;
+  const [data, setData] = useState<any>(null);
+
+  // Call backend API
+  useEffect(() => {
+    fetch("/api/about")
+      .then((res) => res.json())
+      .then((json) => setData(json));
+  }, []);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
-      <h1 className="text-3xl font-bold text-[#00e0cf]">About {appName}</h1>
-      <p className="mt-2 max-w-md text-center">
-        This application is built with Next.js and demonstrates routes, state management,
-        and environment variables.
-      </p>
+    <main className="flex min-h-screen flex-col items-center justify-center bg-black text-white p-6">
+      <h1 className="text-3xl font-bold text-[#00e0cf]">About (Backend)</h1>
+
+      {data ? (
+        <div className="mt-4 bg-gray-900 p-4 rounded-xl shadow-md">
+          <p>👉 Message: {data.message}</p>
+          <p>👉 Square of 5: {data.squareOf5}</p>
+          <p>👉 App Name: {data.appInfo.app}</p>
+          <p>👉 API URL: {data.appInfo.api}</p>
+        </div>
+      ) : (
+        <p className="text-gray-400 mt-4">Loading...</p>
+      )}
     </main>
   );
 }
