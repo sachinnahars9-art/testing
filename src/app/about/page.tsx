@@ -1,14 +1,23 @@
 "use client";
 import { useEffect, useState } from "react";
 
+type AboutResponse = {
+  message: string;
+  squareOf5: number;
+  appInfo: {
+    app: string;
+    api: string;
+  };
+};
+
 export default function AboutPage() {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<AboutResponse | null>(null);
 
   // Call backend API
   useEffect(() => {
     fetch("/api/about")
       .then((res) => res.json())
-      .then((json) => setData(json));
+      .then((json: AboutResponse) => setData(json));
   }, []);
 
   return (
